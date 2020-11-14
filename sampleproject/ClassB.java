@@ -1,7 +1,7 @@
 package sampleproject;
 
 import gardgir.GardgirCheck;
-import java.lang.Math.sqrt;
+import java.lang.Math;
 
 public class ClassB {
     public static void main(String args[]) {
@@ -12,10 +12,10 @@ public class ClassB {
 		for (int i = 0; i < 100; i++)
 			;
 		for (int i = 100; i > 0; i--)
-			sqrt(i);
+			Math.sqrt(i);
 		int j = 100;
-		while (j--)
-			;
+		while (j > 0)
+			j--;
 		/*
 			some comments
 		*/
