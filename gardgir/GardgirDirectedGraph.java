@@ -8,8 +8,8 @@ public class GardgirDirectedGraph {
 	public static final String NOT_FOUND_STRING = "";
 	private int nodesCount;
 	private int edgesCount;
-	private HashMap<String, Integer> stringToInteger;
 	private ArrayList<String> nodeNames;
+	private HashMap<String, Integer> stringToInteger;
 	private ArrayList<ArrayList<Integer> > adjacencyList;
 	public GardgirDirectedGraph() {
 		nodesCount = 0;
@@ -34,6 +34,7 @@ public class GardgirDirectedGraph {
 			return stringToInteger.get(nodeName);
 		else {
 			nodesCount++;
+			nodeNames.add(nodeName);
 			adjacencyList.add(new ArrayList<Integer>());
 			stringToInteger.put(nodeName, nodesCount - 1);
 			return nodesCount - 1;
