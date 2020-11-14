@@ -30,7 +30,7 @@ public class GardgirClassFinder {
 		List<Class> classes = new ArrayList<Class>();
 		for (File directory : dirs)
 		{
-			classes.addAll(findClasses(directory, packageName));
+			classes.addAll(findClassesByDirectoryAndPackageName(directory, packageName));
 		}
 
 		return classes;
@@ -48,7 +48,7 @@ public class GardgirClassFinder {
 		{
 			if (file.isDirectory())
 			{
-				classes.addAll(findClasses(file, packageName + "." + file.getName()));
+				classes.addAll(findClassesByDirectoryAndPackageName(file, packageName + "." + file.getName()));
 			}
 			else if (file.getName().endsWith(".class"))
 			{
