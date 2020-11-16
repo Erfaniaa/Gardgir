@@ -18,6 +18,8 @@ public class GardgirDirectedGraph {
 		edgesCount = 0;
 		stringToInteger = new HashMap<String, Integer>();
 		nodeNames = new ArrayList<String>();
+		nodeWeights = new ArrayList<Integer>();
+		adjacencyList = new ArrayList<ArrayList<Integer> >();
 	}
 
 	public String getNodeName(int nodeIndex) {
