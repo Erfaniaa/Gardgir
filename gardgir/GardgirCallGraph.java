@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 public class GardgirCallGraph {
 	private static final String JAVA_CALL_GRAPH_JAR_FILE_PATH = "javacg-0.1-SNAPSHOT-static.jar";
-	private static final String OUTPUT_FILE_PATH = "output.txt";
+	private static final String JAVA_CALL_GRAPH_OUTPUT_FILE_PATH = "java_call_graph_output.txt";
 	private GardgirDirectedGraph graph;
 	private String projectPackageName;
 	private String projectJarFilePath;
@@ -23,14 +23,15 @@ public class GardgirCallGraph {
 
 	public void constructGraph() {
 		try {
-			String bashCommand = "java -jar " + JAVA_CALL_GRAPH_JAR_FILE_PATH + " " + projectJarFilePath + " > " + OUTPUT_FILE_PATH;
+			String bashCommand = "java -jar " + JAVA_CALL_GRAPH_JAR_FILE_PATH + " " + projectJarFilePath + " > " + JAVA_CALL_GRAPH_OUTPUT_FILE_PATH;
 			Process process = Runtime.getRuntime().exec(new String[]{"bash", "-c", bashCommand});
 			process.waitFor();
-			try (BufferedReader br = new BufferedReader(new FileReader(OUTPUT_FILE_PATH))) {
+			try (BufferedReader br = new BufferedReader(new FileReader(JAVA_CALL_GRAPH_OUTPUT_FILE_PATH))) {
 				String line;
 				while ((line = br.readLine()) != null)
 					addEdgeFromCallGraphString(line);
 			}
+			graph.findStronglyConnectedComponents();
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();
@@ -48,7 +49,7 @@ public class GardgirCallGraph {
 			return;
 	}
 
-	private int countSubstrings(String s, String t) {
+	private static int countSubstrings(String s, String t) {
 		return (s.length() - s.replace(t, "").length()) / t.length();
 	}
 }
