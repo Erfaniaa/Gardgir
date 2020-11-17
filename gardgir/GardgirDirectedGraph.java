@@ -12,6 +12,9 @@ public class GardgirDirectedGraph {
 	private ArrayList<Integer> nodeWeights;
 	private HashMap<String, Integer> stringToInteger;
 	private ArrayList<ArrayList<Integer> > adjacencyList;
+	private ArrayList<ArrayList<Integer> > reverseAdjacencyList;
+	private ArrayList<Boolean> dfsMark;
+	private ArrayList<Integer> dfsList;
 
 	public GardgirDirectedGraph() {
 		nodesCount = 0;
@@ -20,6 +23,9 @@ public class GardgirDirectedGraph {
 		nodeNames = new ArrayList<String>();
 		nodeWeights = new ArrayList<Integer>();
 		adjacencyList = new ArrayList<ArrayList<Integer> >();
+		reverseAdjacencyList = new ArrayList<ArrayList<Integer> >();
+		dfsMark = new ArrayList<Boolean>();
+		dfsList = new ArrayList<Integer>();
 	}
 
 	public String getNodeName(int nodeIndex) {
@@ -45,9 +51,11 @@ public class GardgirDirectedGraph {
 			return stringToInteger.get(nodeName).intValue();
 		else {
 			nodesCount++;
+			dfsMark.add(false);
 			nodeNames.add(nodeName);
 			nodeWeights.add(Integer.valueOf(nodeWeight));
 			adjacencyList.add(new ArrayList<Integer>());
+			reverseAdjacencyList.add(new ArrayList<Integer>());
 			stringToInteger.put(nodeName, Integer.valueOf(nodesCount - 1));
 			return nodesCount - 1;
 		}
@@ -78,6 +86,7 @@ public class GardgirDirectedGraph {
 			return;
 		edgesCount++;
 		adjacencyList.get(node1Index).add(Integer.valueOf(node2Index));
+		reverseAdjacencyList.get(node2Index).add(Integer.valueOf(node1Index));
 	}
 
 	public int getNodesCount() {
@@ -86,5 +95,44 @@ public class GardgirDirectedGraph {
 	
 	public int getEdgesCount() {
 		return edgesCount;
+	}
+
+	public ArrayList<ArrayList<Integer> > findStronglyConnectedComponents() {
+		dfsList.clear();
+		for (int i = 0; i < nodesCount; i++)
+			dfsMark.set(i, false);
+		for (int i = 0; i < nodesCount; i++)
+			if (dfsMark.get(i) == false)
+				dfs1(i);
+		for (int i = 0; i < nodesCount; i++)
+			dfsMark.set(i, false);
+		ArrayList<ArrayList<Integer> > stronglyConnectedComponents = new ArrayList<ArrayList<Integer> >();
+		for (int i = nodesCount - 1; i >= 0; i--) {
+			if (dfsMark.get(dfsList.get(i).intValue()) == false) {
+				stronglyConnectedComponents.add(new ArrayList<Integer>());
+				dfs2(dfsList.get(i).intValue(), stronglyConnectedComponents.get(stronglyConnectedComponents.size() - 1));
+			}
+			System.out.println("______");
+		}
+		return null;
+	}
+
+	private void dfs1(int nodeIndex) {
+		dfsMark.set(nodeIndex, true);
+		for (Integer neighborNodeIndex: adjacencyList.get(nodeIndex)) {
+			if (dfsMark.get(neighborNodeIndex.intValue()) == false)
+				dfs1(neighborNodeIndex);
+		}
+		dfsList.add(nodeIndex);
+	}
+
+	private void dfs2(int nodeIndex, ArrayList<Integer> stronglyConnectedComponent) {
+		dfsMark.set(nodeIndex, true);
+		stronglyConnectedComponent.add(Integer.valueOf(nodeIndex));
+		System.out.println(nodeIndex);
+		for (Integer neighborNodeIndex: reverseAdjacencyList.get(nodeIndex)) {
+			if (dfsMark.get(neighborNodeIndex.intValue()) == false)
+				dfs2(neighborNodeIndex, stronglyConnectedComponent);
+		}
 	}
 }
