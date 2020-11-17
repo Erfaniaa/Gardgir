@@ -1,5 +1,7 @@
 package gardgir;
 
+import gardgir.GardgirCallable;
+import gardgir.GardgirCheck;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -16,6 +18,10 @@ class Gardgir {
 				for (Method method: projectClass.getMethods()) {
 					if (method.isAnnotationPresent(GardgirCheck.class)) {
 						for (Annotation annotation: method.getDeclaredAnnotations()) {
+							GardgirCheck gardgirCheckAnnotation = (GardgirCheck)annotation;
+							@SuppressWarnings("unchecked")
+							GardgirCallable tester = (GardgirCallable)(gardgirCheckAnnotation.tester().getDeclaredConstructor().newInstance());
+							System.out.println(tester.call());
 							System.out.println("Annotation in Method '" + method + "' : " + annotation);
 						}
 					}
@@ -24,5 +30,5 @@ class Gardgir {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
+	}
 }
