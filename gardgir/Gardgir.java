@@ -1,34 +1,40 @@
 package gardgir;
 
-import gardgir.GardgirCallable;
-import gardgir.GardgirCheck;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 class Gardgir {
 	public static final String PROJECT_NAME = "sampleproject";
+	private static GardgirJavaProjectChangesHandler gardgirJavaProjectChangesHandler;
+	private static GardgirCallGraph gardgirCallGraph;
     
 	public static void main(String args[]) {
 		gardgiri();
-    }
+	}
+
     public static void gardgiri() {
-		try {
-			Iterable<Class> projectClassesList = GardgirClassFinder.findClassesByPackageName(PROJECT_NAME);
-			for (Class projectClass: projectClassesList) {
-				for (Method method: projectClass.getMethods()) {
-					if (method.isAnnotationPresent(GardgirCheck.class)) {
-						for (Annotation annotation: method.getDeclaredAnnotations()) {
-							GardgirCheck gardgirCheckAnnotation = (GardgirCheck)annotation;
-							@SuppressWarnings("unchecked")
-							GardgirCallable tester = (GardgirCallable)(gardgirCheckAnnotation.tester().getDeclaredConstructor().newInstance());
-							System.out.println(tester.call());
-							System.out.println("Annotation in Method '" + method + "' : " + annotation);
-						}
-					}
-				}
+		gardgirJavaProjectChangesHandler = new GardgirJavaProjectChangesHandler(PROJECT_NAME, PROJECT_NAME);
+		gardgirJavaProjectChangesHandler.buildJar();
+		gardgirCallGraph = new GardgirCallGraph(GardgirJavaProject.OUTPUT_JAR_FILENAME, PROJECT_NAME);
+		
+		while (true) {
+			//TODO: calculateJavaMethodWeights();
+			//TODO: apply on graph
+			for (StronglyConnectedComponent stronglyConnectedComponent: sinkComponents) {
+				//TODO: insert return line in code
+				//TODO: calculateJavaMethodWeights();
+				//TODO: revert code changes
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			//TODO: mark node to not consider in graph
+			//TODO: update latest version
 		}
+
+		//TODO: print deletions
+		//TODO: restore code to the original one
+
+	}
+
+	private void calculateJavaMethodWeights() {
+
 	}
 }
