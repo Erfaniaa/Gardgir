@@ -1,3 +1,5 @@
+package gardgir;
+
 public class GardgirJavaProject {
 	public static final String OUTPUT_JAR_FILENAME = "output.jar";
 	private String javaProjectDirectoryRelativePath;
