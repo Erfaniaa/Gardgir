@@ -3,7 +3,7 @@ package gardgir;
 import java.util.ArrayList;
 
 public class GardgirStronglyConnectedComponent {
-	private int totalWeight;
+	private int totalWeight, totalInDegree, totalOutDegree;
 	private ArrayList<String> nodeNames;
 
 	public GardgirStronglyConnectedComponent() {
@@ -25,5 +25,13 @@ public class GardgirStronglyConnectedComponent {
 
 	public void addNodeName(String nodeName) {
 		nodeNames.add(nodeName);
+	}
+
+	public void increaseOutDegree() {
+		totalOutDegree++;
+	}
+
+	public void increaseInDegree() {
+		totalInDegree++;
 	}
 }
