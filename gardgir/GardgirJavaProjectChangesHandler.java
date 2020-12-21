@@ -1,5 +1,6 @@
+package gardgir;
+
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,11 +13,11 @@ class GardgirJavaProjectChangesHandler extends GardgirJavaProject {
 	static final String BACKUP_DIRECTORY_SUFFIX = "_backup";
 	static final String LAST_VERSION_DIRECTORY_SUFFIX = "_last_version";
 
-	public GardgirJavaProjectChangesHandler() {
-		
+	public GardgirJavaProjectChangesHandler(String javaProjectDirectoryRelativePath, String javaProjectPackageName) {
+		super(javaProjectDirectoryRelativePath, javaProjectPackageName);
 	}
 
-	public void copyFiles(String fromDirectory, String toDirectory) throws IOException {
+	public void copyFiles(String fromDirectory, String toDirectory) {
         try {
 			Path sourcePath = Paths.get(fromDirectory);
 			Path destinationPath = Paths.get(toDirectory);
@@ -65,10 +66,14 @@ class GardgirJavaProjectChangesHandler extends GardgirJavaProject {
 	}
 
 	public void addLineToFile(String filePath, int lineIndex, String line) {
-		Path path = Paths.get(filePath);
-		List<String> lines = Files.readAllLines(path);
-		lines.add(lineIndex, line);
-		Files.write(path, lines);
+		try {
+			Path path = Paths.get(filePath);
+			List<String> lines = Files.readAllLines(path);
+			lines.add(lineIndex, line);
+			Files.write(path, lines);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 	
 }
